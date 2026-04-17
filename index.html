@@ -11,196 +11,177 @@
       class="todo-card"
       data-testid="test-todo-card"
       role="region"
-      aria-label="Todo task: Redesign the onboarding flow"
+      aria-label="Todo task"
     >
-      <!-- Header with checkbox and title -->
-      <div class="card-header">
-        <div class="checkbox-wrap">
-          <label for="complete-toggle" class="sr-only"
-            >Mark task as complete</label
+      <!-- Overdue Indicator (Hidden by default) -->
+      <div 
+        class="overdue-indicator" 
+        data-testid="test-todo-overdue-indicator" 
+        id="overdue-banner"
+        hidden
+      >
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <path d="M6 4v3M6 9h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.2"/>
+        </svg>
+        <span>Overdue</span>
+      </div>
+
+      <!-- Display Mode -->
+      <div id="todo-display-mode">
+        <!-- Header with checkbox and title -->
+        <div class="card-header">
+          <div class="checkbox-wrap">
+            <input
+              type="checkbox"
+              id="complete-toggle"
+              data-testid="test-todo-complete-toggle"
+              aria-label="Mark task as complete"
+            />
+          </div>
+
+          <div class="title-block">
+            <h2 data-testid="test-todo-title" id="todo-title">
+              Redesign the onboarding flow
+            </h2>
+            <div class="badges">
+              <span
+                class="badge"
+                data-testid="test-todo-priority test-todo-priority-indicator"
+                id="priority-indicator"
+              ></span>
+              <span
+                class="badge"
+                data-testid="test-todo-status"
+                id="status-badge"
+              ></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Description with Expand/Collapse -->
+        <div class="description-section">
+          <div 
+            class="description-container" 
+            id="todo-description-container"
+            data-testid="test-todo-collapsible-section"
           >
-          <input
-            type="checkbox"
-            id="complete-toggle"
-            data-testid="test-todo-complete-toggle"
-            aria-label="Mark task as complete"
+            <p class="description" data-testid="test-todo-description" id="todo-description-text">
+              Update the new-user walkthrough screens to reflect the latest design
+              system tokens, improve step clarity, and add contextual tooltips for key
+              actions.
+            </p>
+          </div>
+          <button 
+            class="expand-toggle" 
+            id="expand-toggle" 
+            data-testid="test-todo-expand-toggle"
+            aria-expanded="false"
+            aria-controls="todo-description-container"
+            hidden
+          >
+            Show more
+          </button>
+        </div>
+
+        <!-- Meta information -->
+        <div class="meta">
+          <div class="meta-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            <b data-testid="test-todo-due-date" id="due-date-display"></b>
+          </div>
+          <div class="meta-item" style="display: flex; align-items: center; gap: 6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span data-testid="test-todo-time-remaining" id="time-remaining" aria-live="polite"></span>
+          </div>
+        </div>
+
+        <!-- Status Control -->
+        <div class="status-control-wrap">
+          <label for="status-control" class="status-label">Task Status</label>
+          <select 
+            id="status-control" 
+            class="status-select" 
+            data-testid="test-todo-status-control"
+            aria-label="Change task status"
+          >
+            <option value="Pending">Pending</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Done">Done</option>
+          </select>
+        </div>
+
+        <!-- Tags section -->
+        <div class="tags-section">
+          <ul class="tags-list" data-testid="test-todo-tags" id="todo-tags-list"></ul>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="actions">
+          <button class="action-btn" data-testid="test-todo-edit-button">Edit</button>
+          <button class="action-btn danger" data-testid="test-todo-delete-button">Delete</button>
+        </div>
+      </div>
+
+      <!-- Edit Mode -->
+      <form 
+        id="todo-edit-mode" 
+        data-testid="test-todo-edit-form" 
+        style="display: none;"
+      >
+        <div class="form-group">
+          <label for="edit-title">Title</label>
+          <input 
+            type="text" 
+            id="edit-title" 
+            data-testid="test-todo-edit-title-input" 
+            required
           />
         </div>
 
-        <div class="title-block">
-          <h2 data-testid="test-todo-title" id="todo-title">
-            Redesign the onboarding flow
-          </h2>
-          <div class="badges">
-            <span
-              class="badge badge-priority-high"
-              data-testid="test-todo-priority"
-              role="status"
-              aria-label="Priority: High"
-            >
-              High priority
-            </span>
-            <span
-              class="badge badge-status inprogress"
-              data-testid="test-todo-status"
-              id="status-badge"
-              role="status"
-              aria-label="Status: In Progress"
-            >
-              In Progress
-            </span>
+        <div class="form-group">
+          <label for="edit-description">Description</label>
+          <textarea 
+            id="edit-description" 
+            data-testid="test-todo-edit-description-input" 
+            rows="3"
+          ></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="edit-priority">Priority</label>
+            <select id="edit-priority" data-testid="test-todo-edit-priority-select">
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="edit-due-date">Due Date</label>
+            <input 
+              type="datetime-local" 
+              id="edit-due-date" 
+              data-testid="test-todo-edit-due-date-input"
+            />
           </div>
         </div>
-      </div>
 
-      <!-- Description -->
-      <p class="description" data-testid="test-todo-description">
-        Update the new-user walkthrough screens to reflect the latest design
-        system tokens, improve step clarity, and add contextual tooltips for key
-        actions.
-      </p>
-
-      <!-- Meta information (due date and time remaining) -->
-      <div class="meta">
-        <div class="meta-item">
-          <svg
-            class="meta-icon"
-            viewBox="0 0 16 16"
-            fill="none"
-            aria-hidden="true"
-          >
-            <rect
-              x="2"
-              y="3"
-              width="12"
-              height="11"
-              rx="2"
-              stroke="currentColor"
-              stroke-width="1.2"
-            />
-            <path
-              d="M5 2v2M11 2v2M2 7h12"
-              stroke="currentColor"
-              stroke-width="1.2"
-              stroke-linecap="round"
-            />
-          </svg>
-          <time
-            data-testid="test-todo-due-date"
-            id="due-date-display"
-            datetime="2026-05-01T18:00:00Z"
-          >
-            Due May 1, 2026
-          </time>
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" data-testid="test-todo-cancel-button">Cancel</button>
+          <button type="submit" class="btn-save" data-testid="test-todo-save-button">Save Changes</button>
         </div>
-        <div class="meta-item">
-          <svg
-            class="meta-icon"
-            viewBox="0 0 16 16"
-            fill="none"
-            aria-hidden="true"
-          >
-            <circle
-              cx="8"
-              cy="8"
-              r="6"
-              stroke="currentColor"
-              stroke-width="1.2"
-            />
-            <path
-              d="M8 5v3.5l2.5 1.5"
-              stroke="currentColor"
-              stroke-width="1.2"
-              stroke-linecap="round"
-            />
-          </svg>
-          <time
-            data-testid="test-todo-time-remaining"
-            id="time-remaining"
-            aria-live="polite"
-            datetime="2026-05-01T18:00:00Z"
-          ></time>
-        </div>
-      </div>
-
-      <!-- Tags section -->
-      <div class="tags-section">
-        <p class="tags-label">Tags</p>
-        <ul
-          class="tags-list"
-          data-testid="test-todo-tags"
-          role="list"
-          aria-label="Task tags"
-        >
-          <li>
-            <span
-              class="tag-chip"
-              data-testid="test-todo-tag-work"
-              role="listitem"
-              >Work</span
-            >
-          </li>
-          <li>
-            <span
-              class="tag-chip"
-              data-testid="test-todo-tag-urgent"
-              role="listitem"
-              >Urgent</span
-            >
-          </li>
-          <li>
-            <span class="tag-chip" role="listitem">Design</span>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Action buttons -->
-      <div class="actions">
-        <button
-          class="action-btn"
-          data-testid="test-todo-edit-button"
-          aria-label="Edit task"
-        >
-          <svg
-            width="13"
-            height="13"
-            viewBox="0 0 14 14"
-            fill="none"
-            aria-hidden="true"
-          >
-            <path
-              d="M9.5 1.5l3 3L4 13H1v-3L9.5 1.5z"
-              stroke="currentColor"
-              stroke-width="1.3"
-              stroke-linejoin="round"
-            />
-          </svg>
-          Edit
-        </button>
-        <button
-          class="action-btn danger"
-          data-testid="test-todo-delete-button"
-          aria-label="Delete task"
-        >
-          <svg
-            width="13"
-            height="13"
-            viewBox="0 0 14 14"
-            fill="none"
-            aria-hidden="true"
-          >
-            <path
-              d="M2 3.5h10M5.5 3.5V2.5h3v1M6 6v4M8 6v4M3 3.5l.7 8h6.6l.7-8"
-              stroke="currentColor"
-              stroke-width="1.3"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-          Delete
-        </button>
-      </div>
+      </form>
     </article>
+
 
     <!-- External JavaScript file -->
     <script src="script.js"></script>
